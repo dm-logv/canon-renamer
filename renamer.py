@@ -43,18 +43,21 @@ def get_target_name(file: Path) -> Path:
                               old_name=file.stem,
                               old_ext=file.suffix)
 
-    print(f'"{file.name}"\t"{dtm}"\t"{file.with_name(target_name)}"')
     return target_name
 
 
 def sequentially(files):
     for file_path in files:
-        get_target_name(file_path)
+        target_path = get_target_name(file_path)
+        print(f'"{file_path}" -> "{target_path}"')
 
 
 def parallel(files):
+    target_paths = []
     with ThreadPoolExecutor(8) as pool:
-        _ = pool.map(get_target_name, files)
+        target_paths = pool.map(lambda path: (path, get_target_name(path)), files)
+    
+    [print(f'"{file_path}" -> "{target_path}"') for file_path, target_path in target_paths]
 
 
 files = PATH.iterdir()
