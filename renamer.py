@@ -13,14 +13,22 @@ DTM_FMT = '%Y%m%d-%H%M%S'
 MASK = '{dtm}-{old_name}{old_ext}'
 
 
-def get_exif_dtm(file: Path):
-    """Read EXIF DateTime field from `file`"""
+def get_meta(file: Path):
+    """Extract `file` metadata"""
     if file.suffix.lower() == '.mov':
         # MOV does not contains EXIF
         file = file.with_suffix('.thm')
 
     meta = pyexiv2.ImageMetadata(str(file))
     meta.read()
+
+    return meta
+
+
+def get_exif_dtm(file: Path):
+    """Read EXIF DateTime field from `file`"""
+    meta = get_meta(file)
+
     try:
         return meta['Exif.Image.DateTime'].value
     except KeyError:
