@@ -49,12 +49,12 @@ def get_target_name(file: Path) -> Path:
 
 def sequentially(files):
     for file_path in files:
-        print_dtm(file_path)
+        get_target_name(file_path)
 
 
 def parallel(files):
     with ThreadPoolExecutor(8) as pool:
-        _ = pool.map(print_dtm, files)
+        _ = pool.map(get_target_name, files)
 
 
 files = PATH.iterdir()
