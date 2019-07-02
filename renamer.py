@@ -35,7 +35,7 @@ def get_exif_dtm(file: Path):
         return None
 
 
-def get_target_name(file: Path) -> Path:
+def get_target_path(file: Path) -> Path:
     """Builds a target file name to rename `file` to"""
     dtm: datetime = get_exif_dtm(file)
 
@@ -48,14 +48,14 @@ def get_target_name(file: Path) -> Path:
 
 def sequentially(files):
     for file_path in files:
-        target_path = get_target_name(file_path)
+        target_path = get_target_path(file_path)
         print(f'"{file_path}" -> "{target_path}"')
 
 
 def parallel(files):
     target_paths = []
     with ThreadPoolExecutor(8) as pool:
-        target_paths = pool.map(lambda path: (path, get_target_name(path)), files)
+        target_paths = pool.map(lambda path: (path, get_target_path(path)), files)
     
     [print(f'"{file_path}" -> "{target_path}"') for file_path, target_path in target_paths]
 
