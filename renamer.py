@@ -42,8 +42,8 @@ def get_target_path(file: Path) -> Path:
     target_name = MASK.format(dtm=(dtm and dtm.strftime(DTM_FMT)),
                               old_name=file.stem,
                               old_ext=file.suffix)
-
-    return target_name
+    target_path = file.with_name(target_name)
+    return target_path
 
 
 def sequentially(files):
