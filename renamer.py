@@ -8,7 +8,7 @@ from pathlib import Path
 
 logging.basicConfig(level=logging.INFO, format='%(asctime)s:%(message)s')
 
-PATH = Path(r'/run/media/dmitry/EOS_DIGITAL/DCIM/101CANON/')
+SRC_FOLDER = Path(r'/run/media/dmitry/EOS_DIGITAL/DCIM/101CANON/')
 DTM_FMT = '%Y%m%d-%H%M%S'
 MASK = '{dtm}-{old_name}{old_ext}'
 
@@ -60,6 +60,6 @@ def parallel(files):
     [print(f'"{file_path}" -> "{target_path}"') for file_path, target_path in target_paths]
 
 
-files = PATH.iterdir()
+files = SRC_FOLDER.iterdir()
 sequentially(files)
 #parallel(files)
