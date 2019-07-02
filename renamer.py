@@ -9,6 +9,8 @@ from pathlib import Path
 logging.basicConfig(level=logging.INFO, format='%(asctime)s:%(message)s')
 
 SRC_FOLDER = Path(r'/run/media/dmitry/EOS_DIGITAL/DCIM/101CANON/')
+DEST_FOLDER = Path(r'/run/media/dmitry/EOS_DIGITAL/DCIM/101CANON/')
+SUBFOLDER = r'{:%Y/%Y-%m}'
 DTM_FMT = '%Y%m%d-%H%M%S'
 MASK = '{dtm}-{old_name}{old_ext}'
 
@@ -42,7 +44,14 @@ def get_target_path(file: Path) -> Path:
     target_name = MASK.format(dtm=(dtm and dtm.strftime(DTM_FMT)),
                               old_name=file.stem,
                               old_ext=file.suffix)
-    target_path = file.with_name(target_name)
+    
+    target_folder: Path = DEST_FOLDER 
+    if SUBFOLDER:
+        target_folder /= Path(SUBFOLDER.format(dtm))
+
+    target_folder.mkdir(parents=True, exist_ok=True)
+    target_path = target_folder / target_name
+    
     return target_path
 
 
